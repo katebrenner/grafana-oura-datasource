@@ -24,11 +24,17 @@ export function ConfigEditor(props: Props) {
 
   // Strava-style: when config page loads with ?code= after Oura redirect, exchange code for tokens (once per load)
   useEffect(() => {
-    if (!hasCodeInUrl || !options.uid) {return;}
+    if (!hasCodeInUrl || !options.uid) {
+      return;
+    }
     const match = window.location.search.match(AUTH_CODE_PATTERN);
     const code = match?.[1];
-    if (!code) {return;}
-    if (exchangeStartedRef.current) {return;}
+    if (!code) {
+      return;
+    }
+    if (exchangeStartedRef.current) {
+      return;
+    }
     exchangeStartedRef.current = true;
 
     queueMicrotask(() => {
@@ -206,7 +212,10 @@ export function ConfigEditor(props: Props) {
       )}
       {exchangeSuccess && (
         <InlineField label="" labelWidth={14}>
-          <Alert severity="success" title="Auth code successfully obtained. Save data source to finish authentication." />
+          <Alert
+            severity="success"
+            title="Auth code successfully obtained. Save data source to finish authentication."
+          />
         </InlineField>
       )}
       {hasErrorInUrl && (
