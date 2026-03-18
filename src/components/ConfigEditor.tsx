@@ -24,15 +24,17 @@ export function ConfigEditor(props: Props) {
 
   // Strava-style: when config page loads with ?code= after Oura redirect, exchange code for tokens (once per load)
   useEffect(() => {
-    if (!hasCodeInUrl || !options.uid) return;
+    if (!hasCodeInUrl || !options.uid) {return;}
     const match = window.location.search.match(AUTH_CODE_PATTERN);
     const code = match?.[1];
-    if (!code) return;
-    if (exchangeStartedRef.current) return;
+    if (!code) {return;}
+    if (exchangeStartedRef.current) {return;}
     exchangeStartedRef.current = true;
 
-    setExchangePending(true);
-    setOauthError(null);
+    queueMicrotask(() => {
+      setExchangePending(true);
+      setOauthError(null);
+    });
     const redirectUri = currentLocation;
     const url = `/api/datasources/uid/${options.uid}/resources/oauth/exchange`;
 
